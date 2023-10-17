@@ -40,28 +40,27 @@ public class User {
             user = new User(result);
         }
 
-
         return user;
     }
 
     public List<Todo> getTodos() throws SQLException {
-	    return this.getTodos(null);
+        List<Todo> todos = new ArrayList<Todo>();
+        todos.addAll(this.getTodos(true));
+        todos.addAll(this.getTodos(false));
+        return todos;
     }
 
     /**
      * Loads all todos by given status
-     * @param done status of todos; If null status will be ignored.
+     *
+     * @param done status of todos;
      * @return
      * @throws SQLException
      */
     public List<Todo> getTodos(boolean done) throws SQLException {
         List<Todo> todos = new ArrayList<Todo>();
         Connection connection = DbInstance.getInstance();
-	String statement = "SELECT * FROM todo WHERE user_id = " + userId;
-	if (done != null) {
-		statement += " AND done = " + done;	
-	}
-        PreparedStatement statement = connection.prepareStatement(statement);
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM todo WHERE user_id = " + this.userId + " AND done = " + done);
         ResultSet result = statement.executeQuery();
 
         while (result.next()) {
