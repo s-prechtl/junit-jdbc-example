@@ -40,6 +40,9 @@ public class User {
             user = new User(result);
         }
 
+        result.close();
+        statement.close();
+
         return user;
     }
 
