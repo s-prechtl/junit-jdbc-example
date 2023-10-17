@@ -66,6 +66,10 @@ public class User {
         while (result.next()) {
             todos.add(new Todo(result));
         }
+
+        statement.close();
+        connection.close();
+
         return todos;
     }
 }
