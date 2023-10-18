@@ -28,10 +28,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Start MySQL
-      run: |
-        sudo /etc/init.d/mysql start
-        mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
+    - uses: isbang/compose-action@v1.5.1
+    - name: Docker Compose MySql db
+      with:
+        compose-file: "docker-compose.yml"
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
