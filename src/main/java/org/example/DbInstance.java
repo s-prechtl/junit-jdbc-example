@@ -10,10 +10,15 @@ import java.util.Properties;
 public class DbInstance {
     private static Connection instance = null;
 
-    private DbInstance() {
+    private DbInstance(boolean testInstance) {
         Properties props = new Properties();
         try {
-            props.load(DbInstance.class.getResource("config.properties").openStream());
+            String configPath = "config.properties";
+            if (testInstance) {
+                configPath = "config.test.properties";
+            }
+            props.load(DbInstance.class.getResource(configPath).openStream());
+
             instance = DriverManager.getConnection(props.getProperty("connection_url"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -21,8 +26,13 @@ public class DbInstance {
     }
 
     public static Connection getInstance() {
+        return getInstance(false);
+    }
+
+
+    public static Connection getInstance(boolean testInstance) {
         if (instance == null) {
-            new DbInstance();
+            new DbInstance(testInstance);
         }
         return instance;
     }

@@ -70,9 +70,24 @@ public class User {
             todos.add(new Todo(result));
         }
 
+        result.close();
         statement.close();
-        connection.close();
 
         return todos;
     }
+
+	public static List<User> getAllUsers() throws SQLException {
+        List<User> users = new ArrayList<User>();
+        Connection connection = DbInstance.getInstance();
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM user");
+        ResultSet result = statement.executeQuery();
+        while (result.next()) {
+                users.add(new User(result));
+        }
+
+        result.close();
+        statement.close();
+
+		return users;
+	}
 }
